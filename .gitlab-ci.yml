@@ -20,10 +20,7 @@ variables:
 build:
   stage: build
   script:
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN http://127.0.0.1.nip.io:8888
-    - docker build --pull -t prod-image:latest .
-    - docker tag release:latest 127.0.0.1.nip.io:8888/$CI_PROJECT_PATH:$CI_COMMIT_REF_SLUG
-    - docker push $BUILD_IMAGE
+    - echo "Check the .NET version, then build some .NET project files:"
   rules:
     - if: '$CI_COMMIT_BRANCH == "staging" || $CI_COMMIT_BRANCH == "master" || $CI_COMMIT_BRANCH =~ /^release\/*/  || $CI_COMMIT_BRANCH == "main"'
       when: always
@@ -31,9 +28,7 @@ build:
 release:
   stage: release
   script:
-    - docker pull $BUILD_IMAGE
-    - docker tag $BUILD_IMAGE $RELEASE_IMAGE
-    - docker push $RELEASE_IMAGE
+    - echo "Release .NET project"
   rules:
     - if: '$CI_COMMIT_BRANCH == "staging" || $CI_COMMIT_BRANCH == "master" || $CI_COMMIT_BRANCH =~ /^release\/*/  || $CI_COMMIT_BRANCH == "main"'
       when: always
